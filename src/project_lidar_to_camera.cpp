@@ -23,7 +23,6 @@ void loadCalibrationData(cv::Mat &P_rect_00, cv::Mat &R_rect_00, cv::Mat &RT)
     P_rect_00.at<double>(0,0) = 7.215377e+02; P_rect_00.at<double>(0,1) = 0.000000e+00; P_rect_00.at<double>(0,2) = 6.095593e+02; P_rect_00.at<double>(0,3) = 0.000000e+00;
     P_rect_00.at<double>(1,0) = 0.000000e+00; P_rect_00.at<double>(1,1) = 7.215377e+02; P_rect_00.at<double>(1,2) = 1.728540e+02; P_rect_00.at<double>(1,3) = 0.000000e+00;
     P_rect_00.at<double>(2,0) = 0.000000e+00; P_rect_00.at<double>(2,1) = 0.000000e+00; P_rect_00.at<double>(2,2) = 1.000000e+00; P_rect_00.at<double>(2,3) = 0.000000e+00;
-
 }
 
 void projectLidarToCamera2()
@@ -41,13 +40,21 @@ void projectLidarToCamera2()
     cv::Mat RT(4,4,cv::DataType<double>::type); // rotation matrix and translation vector
     loadCalibrationData(P_rect_00, R_rect_00, RT);
     
-    // TODO: project lidar points
+    // project lidar points
     cv::Mat visImg = img.clone();
     cv::Mat overlay = visImg.clone();
 
     cv::Mat X(4,1,cv::DataType<double>::type);
     cv::Mat Y(3,1,cv::DataType<double>::type);
     for(auto it=lidarPoints.begin(); it!=lidarPoints.end(); ++it) {
+
+        // Filter
+        float maxX = 25.0, maxY = 6.0, minZ = -1.4;
+        if(it->x > maxX || it->x < 0.0 || abs(it->y) > maxY || it->z < minZ || it->r<0.01 )
+        {
+            continue; // skip to next point
+        }
+
         // 1. Convert current Lidar point into homogeneous coordinates and store it in the 4D variable X.
         X.at<double>(0, 0) = it->x;
         X.at<double>(1, 0) = it->y;

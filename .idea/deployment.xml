@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="DC Sim Docker Container (f14b77c7-a9b2-4364-b823-b2d2c926bbb9)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/lidar_to_camera" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>
